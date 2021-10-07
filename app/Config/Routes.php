@@ -24,6 +24,7 @@ $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(true);
 
+
 /*
  * --------------------------------------------------------------------
  * Route Definitions
@@ -54,6 +55,8 @@ $routes->get('/about', function (){
 	echo view('v_about'); 
 	echo view('layout/footer');
 });
+$routes->get('/register', 'Templating::register');
+$routes->post('/saveRegister', 'Templating::saveregister');
 
 /*
  * --------------------------------------------------------------------
