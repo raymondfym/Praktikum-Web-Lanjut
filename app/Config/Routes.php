@@ -57,6 +57,9 @@ $routes->get('/about', function (){
 });
 $routes->get('/register', 'Templating::register');
 $routes->post('/saveRegister', 'Templating::saveregister');
+$routes->get('/admin/posts', 'AdminPostsController::index');
+$routes->get('/admin/posts/create', 'AdminPostsController::create');
+$routes->get('/admin/posts/store', 'AdminPostsController::store');
 
 /*
  * --------------------------------------------------------------------
