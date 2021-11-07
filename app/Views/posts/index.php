@@ -165,7 +165,7 @@
                         <img src="/assets/adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">Ardella Dean</a>
+                        <a href="#" class="d-block">Raymond Faraz</a>
                     </div>
                 </div>
 
@@ -220,6 +220,11 @@
             <!-- Main Content -->
             <div class="container">
                 <a href="/admin/posts/create" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Data</a>
+                <?php if (session()->getFlashdata('pesan')) : ?>
+                    <div class="alert alert-warning my-2" role="alert">
+                        <?= session()->getFlashdata('pesan')?>
+                    </div>
+                <?php endif ?>
                 <div class="card mt-3">
                     <div class="table-responsive">
                         <table class="table table-striped text-center">
@@ -234,19 +239,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach ($posts as $i =>$post):?>
-                                <tr>
-                                    <th scope="row"><?= $i+1?></th>
-                                    <td><?= $post['judul'];?></td>
-                                    <td><?= $post['slug'];?></td>
-                                    <td><?= $post['author'];?></td>
-                                    <td><?= $post['kategori'];?></td>
-                                    <td>
-                                        <a href="/admin/posts/edit/<?= $post['slug'];?>" class="btn btn-sm btn-warning me-1"><i class="fas fa-edit"> Edit</i></a>
-                                        <a href="/admin/posts/delete/<?= $post['slug'];?>" class="btn btn-sm btn-danger"><i class="fas fa-trash"> Delete</i></a>
-                                    </td>
-                                </tr>
-                                <?php endforeach;?>
+                                <?php foreach ($posts as $i => $post) : ?>
+                                    <tr>
+                                        <th scope="row"><?= $i + 1 ?></th>
+                                        <td><?= $post['judul']; ?></td>
+                                        <td><?= $post['slug']; ?></td>
+                                        <td><?= $post['author']; ?></td>
+                                        <td><?= $post['kategori']; ?></td>
+                                        <td>
+                                            <a href="/admin/posts/edit/<?= $post['slug']; ?>" class="btn btn-warning me-1"><i class="fas fa-edit"> Edit</i></a>
+
+                                            <form action="/admin/posts/delete/<?= $post['slug']; ?>" method="POST" class="d-inline">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin?')"><i class="fas fa-trash"></i> Delete</button>
+                                            </form>
+                                            <!-- <a href="/admin/posts/delete/" class="btn btn-sm btn-danger"><i class="fas fa-trash"> Delete</i></a> -->
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div>

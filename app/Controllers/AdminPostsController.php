@@ -17,7 +17,6 @@ class AdminPostsController extends BaseController
 
     public function create()
     {
-        session();
         $data = [
             'validation'=>\Config\Services::validation(),
         ];
@@ -76,9 +75,44 @@ class AdminPostsController extends BaseController
 
         $PostModel = model("PostModel");
         $PostModel -> insert($data);
+        session()->setFlashdata('pesan', 'Data berhasil ditambahkan');
         return redirect()->to(base_url('admin/posts/'));
         }else{
-            return redirect()->to(base_url('admin/posts/create'))->withInput()->with('validation', $this->validator);
+            $validation = \Config\Services::validation();
+            return redirect()->to('admin/posts/create')->withInput()->with('validation', $validation);
         }
     }
+    public function delete($slug)
+    {
+        $PostModel = model("PostModel");
+        $PostModel->where('slug', $slug)->delete();
+        session()->setFlashdata('pesan', 'Data berhasil dihapus');
+        return redirect()->to(base_url('admin/posts/'));
+    }
+
+    public function edit($slug)
+    {
+        session();
+        $PostModel = model("PostModel");
+        $data = [
+            'validation'=>\Config\Services::validation(),
+            'post' => $PostModel->where('slug', $slug)->first()
+            
+        ];
+        return view("posts/edit",$data);
+    }
+
+    public function update($post_id)
+	{
+        $PostModel = model("PostModel");
+        $data = [
+            'judul' => $this->request->getVar("judul"),
+            'slug' => $this->request->getVar("slug"),
+            'kategori' => $this->request->getVar("kategori"),
+            'author' => $this->request->getVar("author"),
+            'deskripsi' => $this->request->getVar("deskripsi"),
+        ];
+		$PostModel->update($post_id, $data);
+		return redirect()->to(base_url('/admin/posts/'));
+	}
 }
